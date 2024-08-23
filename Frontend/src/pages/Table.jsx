@@ -144,13 +144,13 @@ const Table = () => {
                 break;
               default:
                 bgColor = "bg-green-100";
-                borderColor = 'border-green-600';
-                textColor = 'text-green-600' // Default background color
+                borderColor = "border-green-600";
+                textColor = "text-green-600"; // Default background color
             }
             return (
               <span
                 key={index}
-                className={`text-white ${bgColor} px-3 py-0.5 border ${borderColor} ${textColor} rounded-3xl`}
+                className={`${bgColor} px-3 py-0.5 border ${borderColor} ${textColor} rounded-3xl`}
               >
                 {team}
               </span>
