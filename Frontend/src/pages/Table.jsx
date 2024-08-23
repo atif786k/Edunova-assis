@@ -48,10 +48,7 @@ const Table = () => {
         "UX Designer",
       ]),
       status: faker.helpers.arrayElement(["Active"]),
-      teams: faker.helpers.arrayElements(
-        ["Design", "Product", "Marketing"],
-        faker.datatype.number({ min: 3, max: 3 })
-      ),
+      teams: ["Design", "Product", "Marketing"],
     }));
   };
 
@@ -127,14 +124,38 @@ const Table = () => {
       accessorKey: "teams",
       cell: (info) => (
         <div className="flex flex-wrap gap-2">
-          {info.getValue().map((team, index) => (
-            <span
-              key={index}
-              className="text-[#6941C6] bg-purple-100 px-3 py-0.5 border border-[#6941C6] rounded-3xl"
-            >
-              {team}
-            </span>
-          ))}
+          {info.getValue().map((team, index) => {
+            let bgColor, borderColor, textColor;
+            switch (team.toLowerCase()) {
+              case "design":
+                bgColor = "bg-purple-100";
+                borderColor = "border-purple-600";
+                textColor = "text-purple-600"; // Light purple
+                break;
+              case "product":
+                bgColor = "bg-blue-100"; // Light blue
+                borderColor = "border-blue-600";
+                textColor = "text-blue-600";
+                break;
+              case "marketing":
+                bgColor = "bg-pink-100";
+                borderColor = "border-pink-600";
+                textColor = "text-pink-600"; // Light pink
+                break;
+              default:
+                bgColor = "bg-green-100";
+                borderColor = 'border-green-600';
+                textColor = 'text-green-600' // Default background color
+            }
+            return (
+              <span
+                key={index}
+                className={`text-white ${bgColor} px-3 py-0.5 border ${borderColor} ${textColor} rounded-3xl`}
+              >
+                {team}
+              </span>
+            );
+          })}
           <span className="px-3 py-0.5 border border-[#dee5ec] rounded-3xl">
             +4
           </span>
@@ -180,7 +201,7 @@ const Table = () => {
         <div className="left-div flex items-center">
           <h2 className="text-lg font-semibold">Team members</h2>
           <span className="ml-2 px-2 text-[#6941C6] text-sm font-normal border rounded-xl bg-purple-100">
-            100 users
+            {data.length} users
           </span>
         </div>
         <div className="right-div flex items-center space-x-2">

@@ -138,6 +138,7 @@ const AddCard = ({ onCancel, addFunction }) => {
                   errors.role ? "border-red-500" : "border-[#dee5ec]"
                 }`}
               >
+                <option value="select" selected></option>
                 <option value="Product Designer">Product Designer</option>
                 <option value="Product Manager">Product Manager</option>
                 <option value="frontend ">Frontend Developer</option>
@@ -158,6 +159,7 @@ const AddCard = ({ onCancel, addFunction }) => {
                   errors.status ? "border-red-500" : "border-[#dee5ec]"
                 }`}
               >
+                <option value="select" selected></option>
                 <option value="active">Active</option>
                 <option value="inactive">Inactive</option>
               </select>
