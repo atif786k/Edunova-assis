@@ -7,7 +7,7 @@ const DetailCard = ({ member, onClose }) => {
   return (
     <>
       <div className="popup-inLeft">
-        <div className="detail-container relative mr-5 pb-24 bg-white text-black min-h-[80%] w-[650px] rounded-xl overflow-hidden">
+        <div className="detail-card relative mr-5 pb-24 bg-white text-black min-h-[80%] w-[650px] rounded-xl overflow-hidden">
           <span
             onClick={onClose}
             className="absolute right-4 top-4 cursor-pointer"
@@ -17,7 +17,7 @@ const DetailCard = ({ member, onClose }) => {
 
           <div className="first-div bg-[#2a5b7e] text-white flex items-center py-6 px-10 space-x-10">
             <figure className="h-[100px] w-[100px] rounded-full overflow-hidden">
-              <img src={member.avatar} alt="" />
+              <img src={member.avatar} alt="" className="w-[100px] h-[100px]" />
             </figure>
             <div className="space-y-2">
               <h2 className="text-xl font-bold">{member.username}</h2>
@@ -30,7 +30,7 @@ const DetailCard = ({ member, onClose }) => {
                 </div>
                 <div className="flex flex-col border-l pl-4">
                   <span className="text-md font-medium">Role</span>
-                  <span className="text-md font-normal text-gray-300">
+                  <span className="text-md font-normal text-gray-300 capitalize">
                     {member.role}
                   </span>
                 </div>

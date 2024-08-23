@@ -24,7 +24,7 @@ const Dashboard = () => {
             </li>
           </ul>
         </nav>
-        <div className="content-show w-full my-4 border rounded-xl">
+        <div className="content-show my-4 border rounded-xl">
           <Outlet />
         </div>
       </section>

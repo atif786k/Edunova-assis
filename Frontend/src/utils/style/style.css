@@ -1,3 +1,7 @@
 .dashboard-container{
     height: calc(100% - 88px);
 }
+.content-show{
+    width: calc(100% - 240px);
+    height: calc(100% - 32px)
+}
