@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./style/style.css";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -6,7 +6,10 @@ import { z } from "zod";
 import { IoReload } from "react-icons/io5";
 import { RiDeleteBinLine } from "react-icons/ri";
 
-const EditCard = ({ member, onCancel }) => {
+const EditCard = ({ member, onCancel, editFunction }) => {
+  const [imageSrc, setImageSrc] = useState(member.avatar);
+  const [previewSrc, setPreviewSrc] = useState(null);
+
   const schema = z.object({
     username: z
       .string()
@@ -29,16 +32,30 @@ const EditCard = ({ member, onCancel }) => {
   } = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
-      username: member.username || "",
-      email: member.email || "",
-      role: member.role || "",
-      status: member.status || "",
-      teams: member.teams || "",
+      username: member.username,
+      email: member.email,
+      role: member.role,
+      status: member.status,
+      teams: member.teams.join(", "),
     },
   });
 
+  const handlePhotoChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewSrc(reader.result);
+        setImageSrc(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const onSubmit = (data) => {
-    console.log(data);
+    console.log("Edited Data is here : ", data)
+    const updatedData = { ...data, userId: member.userId, avatar: imageSrc, teams: data.teams.split(",").map(team => team.trim()) };
+    editFunction(updatedData);
     onCancel();
   };
   return (
@@ -51,13 +68,23 @@ const EditCard = ({ member, onCancel }) => {
           <h1 className="text-3xl font-bold">Edit Profile</h1>
           <div className="flex flex-col items-center space-y-4">
             <figure className="h-[100px] w-[100px] rounded-full overflow-hidden flex items-center justify-center">
-              <img src={member.avatar} alt="" className="scale-150" />
+            <img
+                src={imageSrc || "/images/defaultProfile.jpg"}
+                alt="Profile"
+                className="scale-150"
+              />
             </figure>
             <div className="flex space-x-2">
-              <button className="bg-[#f8fafc] flex items-center uppercase border-2 border-[#dee5ec] rounded-[4px] p-2 font-semibold tracking-wider text-[14px]">
+              <label className="bg-[#f8fafc] flex items-center uppercase border-2 border-[#dee5ec] rounded-[4px] p-2 font-semibold tracking-wider text-[14px] cursor-pointer">
                 <IoReload className="text-[20px] mr-2" />
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handlePhotoChange}
+                />
                 Change Photo
-              </button>
+              </label>
               <button className="bg-[#f8fafc] flex items-center uppercase border-2 border-[#dee5ec] rounded-[4px] p-2 font-semibold tracking-wider text-[14px]">
                 <RiDeleteBinLine className="text-[20px] mr-2" />
                 Remove Photo
@@ -101,16 +128,18 @@ const EditCard = ({ member, onCancel }) => {
               <select
                 {...register("role")}
                 id="role"
-                className={`w-full border-r border-l border-t border-b-[#aeb4bd] border-b-[3px] rounded-sm py-[10px] px-4 outline-none ${
+                className={`w-full border-r border-l border-t border-b-[#aeb4bd] border-b-[3px] rounded-sm py-[10px] px-4 outline-none capitalize ${
                   errors.role ? "border-red-500" : "border-[#dee5ec]"
                 }`}
               >
+                <option defaultValue="select">{member.role}</option>
+
                 <option value="Product Designer">Product Designer</option>
                 <option value="Product Manager">Product Manager</option>
-                <option value="frontend ">Frontend Developer</option>
-                <option value="fullstack">FUllStack Developer</option>
-                <option value="ux">UX Designer</option>
-                <option value="ui">UI Designer</option>
+                <option value="Frontend Developer">Frontend Developer</option>
+                <option value="FullStack Developer">FUllStack Developer</option>
+                <option value="UX Designer">UX Designer</option>
+                <option value="UI Designer">UI Designer</option>
               </select>
               {errors.role && (
                 <p className="text-red-500 text-sm">{errors.role.message}</p>
@@ -125,8 +154,10 @@ const EditCard = ({ member, onCancel }) => {
                   errors.status ? "border-red-500" : "border-[#dee5ec]"
                 }`}
               >
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
+                <option defaultValue="select">{member.status}</option>
+
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
               </select>
               {errors.status && (
                 <p className="text-red-500 text-sm">{errors.status.message}</p>

@@ -182,8 +182,13 @@ const Table = () => {
     setData((prevData) => [...prevData, newData]);
   };
 
+  const handleEditMember = (updatedData) => {
+    setData((prevData) =>
+      prevData.map((m) => (m.userId === updatedData.userId ? updatedData : m))
+    );
+  };
+
   const handleCurrentMember = (member) => {
-    console.log(member);
     setSingleSelectedData(member);
   };
 
@@ -326,7 +331,11 @@ const Table = () => {
       {editCardPop && (
         <EditCard
           member={editMemberDetail}
-          onCancel={() => setEditCardPop(false)}
+          editFunction={handleEditMember}
+          onCancel={() => {
+            setEditCardPop(false);
+            setEditMemberDetail(null);
+          }}
         />
       )}
       {deleteCardPop && (
